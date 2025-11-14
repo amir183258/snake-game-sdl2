@@ -1,0 +1,64 @@
+#include <SDL2/SDL.h>
+#include "./playground.hpp"
+
+Playground::Playground() {
+
+	// playground dimensions
+	playground_bbox.w = number_of_cols * tile_dimension;
+	playground_bbox.h = number_of_rows * tile_dimension;
+
+	// window size
+	int window_w, window_h;
+	SDL_GetWindowSize(Game::instance().get_window(), &window_w, &window_h);
+
+	// playground position
+	playground_bbox.x = (window_w - playground_bbox.w) / 2;
+	playground_bbox.y = (window_h - playground_bbox.h) / 2;
+
+	// playground textures
+	tile1 = load_texture("./assets/tile1.png", Game::instance().get_renderer());
+	tile2 = load_texture("./assets/tile2.png", Game::instance().get_renderer());
+}
+
+void Playground::draw(SDL_Renderer* renderer) {
+	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+	SDL_RenderDrawRect(renderer, &playground_bbox);
+
+	SDL_Rect dest_rect;
+	dest_rect.x = playground_bbox.x;
+	dest_rect.y = playground_bbox.y;
+	dest_rect.w = tile_dimension;
+	dest_rect.h = tile_dimension;
+
+	SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+	for (size_t i = 0; i < number_of_rows; ++i) {
+		for (size_t j = 0; j < number_of_cols; ++j) {
+			SDL_RenderDrawRect(renderer, &dest_rect);
+
+			dest_rect.x += dest_rect.w;
+		}
+		dest_rect.x = playground_bbox.x;
+		dest_rect.y += dest_rect.h;
+	}
+}
+
+void Playground::set_dimension(size_t r, size_t c) {
+	if (r < 5 || c < 5) {
+		SDL_Log("invalid dimensions for playground");
+		return;
+	}
+
+	number_of_rows = r;
+	number_of_cols = c;
+}
+
+void Playground::set_tile_dimension(size_t s) {
+	tile_dimension = s;
+}
+
+Playground::~Playground() {
+	SDL_Log("destroying playground textures...");
+
+	SDL_DestroyTexture(tile1);
+	SDL_DestroyTexture(tile2);
+}
