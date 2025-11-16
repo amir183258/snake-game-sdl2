@@ -4,6 +4,7 @@
 #include "./game.hpp"
 #include "./input_handler.hpp"
 #include "./playground.hpp"
+#include "./fps_handler.hpp"
 
 bool Game::init(std::string title, int xpos, int ypos, bool fullscreen) {
 
@@ -54,6 +55,9 @@ void Game::render() {
 	Playground::instance().draw(renderer);
 
 	SDL_RenderPresent(renderer);
+
+	// handling fps
+	FPSHandler::instance().handle_fps();
 }
 
 void Game::update() {
