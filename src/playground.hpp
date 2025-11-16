@@ -35,6 +35,13 @@ public:
 	// get playground bbox
 	SDL_Rect get_bbox() { return playground_bbox; }
 
+	// get playground rows and cols
+	size_t get_rows() { return number_of_rows; }
+	size_t get_cols() { return number_of_cols; }
+
+	// get a tile position (top left corner of a tile)
+	SDL_Point get_tile_pos(size_t r, size_t c);
+
 	~Playground();
 };
 

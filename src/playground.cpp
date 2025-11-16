@@ -21,25 +21,30 @@ Playground::Playground() {
 }
 
 void Playground::draw(SDL_Renderer* renderer) {
-	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-	SDL_RenderDrawRect(renderer, &playground_bbox);
-
 	SDL_Rect dest_rect;
 	dest_rect.x = playground_bbox.x;
 	dest_rect.y = playground_bbox.y;
 	dest_rect.w = tile_dimension;
 	dest_rect.h = tile_dimension;
 
-	SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+	// SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);					for debug
 	for (size_t i = 0; i < number_of_rows; ++i) {
 		for (size_t j = 0; j < number_of_cols; ++j) {
-			SDL_RenderDrawRect(renderer, &dest_rect);
+			// SDL_RenderDrawRect(renderer, &dest_rect);				for debug
+
+			if ((i + j) % 2)
+				SDL_RenderCopy(renderer, tile1, nullptr, &dest_rect);
+			else
+				SDL_RenderCopy(renderer, tile2, nullptr, &dest_rect);
 
 			dest_rect.x += dest_rect.w;
 		}
 		dest_rect.x = playground_bbox.x;
 		dest_rect.y += dest_rect.h;
 	}
+
+	// SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);					for debug
+	// SDL_RenderDrawRect(renderer, &playground_bbox);					for debug
 }
 
 void Playground::set_dimension(size_t r, size_t c) {
@@ -54,6 +59,22 @@ void Playground::set_dimension(size_t r, size_t c) {
 
 void Playground::set_tile_dimension(size_t s) {
 	tile_dimension = s;
+}
+
+SDL_Point Playground::get_tile_pos(size_t r, size_t c) {
+	if (r >= number_of_rows || c >= number_of_cols ||
+			r < 0 || c < 0) {
+		SDL_Log("wrong row or col in get_tile_pos(...) in background");
+		return {0, 0};
+
+	}
+
+	SDL_Point pos;
+
+	pos.x = r * tile_dimension + playground_bbox.x; 
+	pos.y = c * tile_dimension + playground_bbox.y;
+
+	return pos;
 }
 
 Playground::~Playground() {
