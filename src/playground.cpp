@@ -1,5 +1,6 @@
 #include <SDL2/SDL.h>
 #include "./playground.hpp"
+#include "./game.hpp"
 
 Playground::Playground() {
 

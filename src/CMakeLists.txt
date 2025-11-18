@@ -13,6 +13,7 @@ add_executable(SnakeGame
     input_handler.cpp
     playground.cpp
     fps_handler.cpp
+    snake.cpp
 )
 
 set(ASSETS_DIR ${CMAKE_SOURCE_DIR}/assets)
