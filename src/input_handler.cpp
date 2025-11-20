@@ -1,6 +1,7 @@
 #include <SDL2/SDL.h>
 #include "./input_handler.hpp"
 #include "./game.hpp"
+#include "./snake.hpp"
 
 void InputHandler::update() {
 	SDL_Event event;
@@ -11,8 +12,22 @@ void InputHandler::update() {
 			Game::instance().set_running(false);
 
 		if (event.type == SDL_KEYDOWN) {
-			// TODO create class for handling keyboard.
-			SDL_Log("%c", event.key.keysym.sym);
+			SDL_Keycode key = event.key.keysym.sym;
+
+			switch (key) {
+			case SDLK_w:
+				Snake::instance().set_direction(direction::UP);
+				break;
+			case SDLK_d:
+				Snake::instance().set_direction(direction::RIGHT);
+				break;
+			case SDLK_s:
+				Snake::instance().set_direction(direction::DOWN);
+				break;
+			case SDLK_a:
+				Snake::instance().set_direction(direction::LEFT);
+			}
+
 		}
 	}
 }

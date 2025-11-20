@@ -52,20 +52,23 @@ void Game::render() {
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 	SDL_RenderClear(renderer);
 
-	// drawing playground
+	// draw playground
 	Playground::instance().draw(renderer);
 
-	// drawing snake
+	// draw snake
 	Snake::instance().draw(renderer);
 
 	SDL_RenderPresent(renderer);
 
-	// handling fps
+	// draw fps
 	FPSHandler::instance().handle_fps();
 }
 
 void Game::update() {
 	InputHandler::instance().update();
+
+	// update snake
+	Snake::instance().update();
 }
 
 void Game::clean() {

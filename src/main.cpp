@@ -12,9 +12,8 @@ int main() {
 	false);
 
 	while (Game::instance().get_running()) {
-		Game::instance().update();
-		
 		Game::instance().render();
+		Game::instance().update();
 	}
 
 	return 0;

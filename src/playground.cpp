@@ -72,8 +72,8 @@ SDL_Point Playground::get_tile_pos(size_t r, size_t c) {
 
 	SDL_Point pos;
 
-	pos.x = r * tile_dimension + playground_bbox.x; 
-	pos.y = c * tile_dimension + playground_bbox.y;
+	pos.x = c * tile_dimension + playground_bbox.x; 
+	pos.y = r * tile_dimension + playground_bbox.y;
 
 	return pos;
 }
