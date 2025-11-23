@@ -16,6 +16,7 @@ class Snake {
 private:
 
 	direction current_dir;
+	direction previous_dir;
 
 	struct playground_position {
 		size_t r, c;

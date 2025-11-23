@@ -1,6 +1,7 @@
 #ifndef PLAYGROUND_H
 #define PLAYGROUND_H
 
+#include <vector>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include "./game.hpp"
@@ -17,6 +18,9 @@ private:
 	// tile textures
 	SDL_Texture* tile1;
 	SDL_Texture* tile2;
+
+	// playground borad; this board is used to put apples and check self eating.
+	std::vector<bool> playground_board;
 
 	Playground();
 
@@ -42,6 +46,9 @@ public:
 
 	// get a tile position (top left corner of a tile)
 	SDL_Point get_tile_pos(size_t r, size_t c);
+
+	// set playground board elements
+	void set_playground_board(size_t r, size_t c, bool value);
 
 	~Playground();
 };

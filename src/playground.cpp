@@ -19,6 +19,9 @@ Playground::Playground() {
 	// playground textures
 	tile1 = load_texture("./assets/tile1.png", Game::instance().get_renderer());
 	tile2 = load_texture("./assets/tile2.png", Game::instance().get_renderer());
+
+	// set all board elements to fasle
+	playground_board.resize(number_of_rows * number_of_cols, false);
 }
 
 void Playground::draw(SDL_Renderer* renderer) {
@@ -76,6 +79,16 @@ SDL_Point Playground::get_tile_pos(size_t r, size_t c) {
 	pos.y = r * tile_dimension + playground_bbox.y;
 
 	return pos;
+}
+
+void Playground::set_playground_board(size_t r, size_t c, bool value) {
+	if (r < 0 || c < 0 || r >= number_of_rows || c >= number_of_cols) {
+		SDL_Log("wrong row or col for playground board");
+		return;
+	}
+
+	size_t idx = r * number_of_rows + c;
+	playground_board[idx] = value;
 }
 
 Playground::~Playground() {

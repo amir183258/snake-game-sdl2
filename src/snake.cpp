@@ -12,12 +12,18 @@ Snake::Snake() {
 	size_t rows_center = Playground::instance().get_rows() / 2 - 1;
 	size_t cols_center = Playground::instance().get_cols() / 2 + 1;
 
-	// create 3 tiles snake
+	// create 3 tiles snake and mark them on the board
 	current_dir = direction::RIGHT;
+	previous_dir = direction::RIGHT;
 
 	snake.push_front({rows_center, cols_center - 2});
+	Playground::instance().set_playground_board(rows_center, cols_center - 2, true);
+
 	snake.push_front({rows_center, cols_center - 1});
+	Playground::instance().set_playground_board(rows_center, cols_center - 1, true);
+
 	snake.push_front({rows_center, cols_center - 0});
+	Playground::instance().set_playground_board(rows_center, cols_center - 0, true);
 }
 
 // drawing snake
@@ -57,14 +63,13 @@ void Snake::draw_body(SDL_Renderer* renderer) {
 	dest_rect.w = Playground::instance().get_tile_dimension();
 	dest_rect.h = Playground::instance().get_tile_dimension();
 
-	for (size_t i = 1; i < snake.size(); ++i) {
-		SDL_Point draw_pos = Playground::instance().get_tile_pos(snake[i].r, snake[i].c);
+	for (size_t i = 1; i < snake.size(); ++i) { SDL_Point draw_pos = Playground::instance().get_tile_pos(snake[i].r, snake[i].c);
 		dest_rect.x = draw_pos.x;
 		dest_rect.y = draw_pos.y;
 
 			
 		SDL_RenderCopyEx(renderer, body_texture, nullptr,
-				&dest_rect, 90 /* rotation angle */, nullptr, SDL_FLIP_NONE);
+				&dest_rect, 0, nullptr, SDL_FLIP_NONE);
 	}
 }
 
@@ -96,10 +101,15 @@ void Snake::move_snake() {
 		--new_col;
 	}
 
-	if (new_row != snake[1].r || new_col != snake[1].c) {
-		head.r = new_row;
-		head.c = new_col;
+	if (new_row == snake[1].r && new_col == snake[1].c) {
+		current_dir = previous_dir;
+		move_snake();
+
+		return;
 	}
+
+	head.r = new_row;
+	head.c = new_col;
 
 	snake.push_front(head);
 	snake.pop_back();
@@ -109,6 +119,9 @@ void Snake::update() {
 	++current_frame;
 	if (current_frame >= move_delay) {
 		move_snake();
+
+		previous_dir = current_dir;				// for checking wrong direction toward the body of snake
+
 		current_frame = 0;
 	}
 }
