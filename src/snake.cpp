@@ -2,6 +2,7 @@
 #include "./snake.hpp"
 #include "./playground.hpp"
 #include "./game.hpp"
+#include "./apple.hpp"
 
 Snake::Snake() {
 	// load snake textures
@@ -11,6 +12,12 @@ Snake::Snake() {
 	// find the center of playground
 	size_t rows_center = Playground::instance().get_rows() / 2 - 1;
 	size_t cols_center = Playground::instance().get_cols() / 2 + 1;
+
+	// snake apple flag
+	eat_apple = false;
+
+	// snake size
+	snake_size = 3;
 
 	// create 3 tiles snake and mark them on the board
 	current_dir = direction::RIGHT;
@@ -33,7 +40,7 @@ void Snake::draw_head(SDL_Renderer* renderer) {
 	dest_rect.w = Playground::instance().get_tile_dimension();
 	dest_rect.h = Playground::instance().get_tile_dimension();
 
-	// set width and height of destination rectangle
+	// set x and y of destination rectangle
 	SDL_Point draw_pos = Playground::instance().get_tile_pos(snake.front().r, snake.front().c);
 	dest_rect.x = draw_pos.x;
 	dest_rect.y = draw_pos.y;
@@ -84,6 +91,9 @@ void Snake::draw(SDL_Renderer* renderer) {
 void Snake::move_snake() {
 	playground_position head = snake.front();
 
+	// updating playground board
+	Playground::instance().set_playground_board(head.r, head.c, false);
+
 	size_t new_row = head.r;
 	size_t new_col = head.c;
 
@@ -111,14 +121,35 @@ void Snake::move_snake() {
 	head.r = new_row;
 	head.c = new_col;
 
+	// updating playground board
+	Playground::instance().set_playground_board(head.r, head.c, true);
+
 	snake.push_front(head);
-	snake.pop_back();
+}
+
+void Snake::check_apple() {
+	if (snake.front().r == Apple::instance().get_apple_row() &&
+			snake.front().c == Apple::instance().get_apple_col()) {
+		eat_apple = true;
+		++snake_size;
+
+		Apple::instance().spawn();
+	}
 }
 
 void Snake::update() {
 	++current_frame;
 	if (current_frame >= move_delay) {
 		move_snake();
+
+		check_apple();
+
+		if (eat_apple)
+			eat_apple = false;
+		else {
+			Playground::instance().set_playground_board(snake.back().r, snake.back().c, false);
+			snake.pop_back();
+		}
 
 		previous_dir = current_dir;				// for checking wrong direction toward the body of snake
 

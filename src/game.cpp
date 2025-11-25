@@ -5,6 +5,7 @@
 #include "./input_handler.hpp"
 #include "./playground.hpp"
 #include "./snake.hpp"
+#include "./apple.hpp"
 #include "./fps_handler.hpp"
 
 bool Game::init(std::string title, int xpos, int ypos, bool fullscreen) {
@@ -57,6 +58,9 @@ void Game::render() {
 
 	// draw snake
 	Snake::instance().draw(renderer);
+
+	// draw apple
+	Apple::instance().draw(renderer);
 
 	SDL_RenderPresent(renderer);
 

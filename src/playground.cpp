@@ -1,6 +1,9 @@
+#include <cstdlib>					// for making random variables
+#include <ctime>					// for making random variables
 #include <SDL2/SDL.h>
 #include "./playground.hpp"
 #include "./game.hpp"
+#include "./snake.hpp"
 
 Playground::Playground() {
 
@@ -89,6 +92,29 @@ void Playground::set_playground_board(size_t r, size_t c, bool value) {
 
 	size_t idx = r * number_of_rows + c;
 	playground_board[idx] = value;
+}
+
+SDL_Point Playground::get_free_playground_position() {
+	// setting random stuff
+	std::srand(static_cast<unsigned int>(std::time(nullptr)));
+
+	// making random pos
+	size_t free_board_spaces = playground_board.size() -
+		Snake::instance().get_snake_size();
+	size_t free_space_position = std::rand() % free_board_spaces;
+
+	size_t real_position = 0;
+	while (free_space_position) {
+		if (!playground_board[real_position])				// if there were no snake then add real position
+			--free_space_position;
+		++real_position;
+	}
+
+	SDL_Point result;
+	result.x = real_position / number_of_rows;
+	result.y = real_position % number_of_cols;
+
+	return result;
 }
 
 Playground::~Playground() {

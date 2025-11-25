@@ -50,6 +50,13 @@ public:
 	// set playground board elements
 	void set_playground_board(size_t r, size_t c, bool value);
 
+	// get playground board and its size
+	std::vector<bool> get_playground_board() { return playground_board; }
+	size_t get_playground_board_size() { return number_of_rows * number_of_cols; }
+
+	// get a random free position (to draw apple or other staff)
+	SDL_Point get_free_playground_position();
+
 	~Playground();
 };
 

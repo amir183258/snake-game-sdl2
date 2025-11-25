@@ -27,12 +27,19 @@ private:
 
 	std::deque<playground_position> snake;
 
+	bool eat_apple;
+
 	// velocity handling
-	size_t move_delay = 30;				// every move_delay frames snake moves
+	size_t move_delay = 10;				// every move_delay frames snake moves
 	size_t current_frame = 0;
+
+	// snake size
+	size_t snake_size = 3;
 
 	void draw_head(SDL_Renderer* renderer);
 	void draw_body(SDL_Renderer* renderer);
+
+	void check_apple();
 
 	void move_snake();
 
@@ -46,6 +53,8 @@ public:
 	void set_direction(direction dir) { current_dir = dir; }
 	void draw(SDL_Renderer* renderer);
 	void update();
+
+	size_t get_snake_size() { return snake_size; }
 
 	~Snake();
 };
