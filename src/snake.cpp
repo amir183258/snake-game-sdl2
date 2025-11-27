@@ -91,9 +91,6 @@ void Snake::draw(SDL_Renderer* renderer) {
 void Snake::move_snake() {
 	playground_position head = snake.front();
 
-	// updating playground board
-	Playground::instance().set_playground_board(head.r, head.c, false);
-
 	size_t new_row = head.r;
 	size_t new_col = head.c;
 
@@ -121,10 +118,20 @@ void Snake::move_snake() {
 	head.r = new_row;
 	head.c = new_col;
 
-	// updating playground board
-	Playground::instance().set_playground_board(head.r, head.c, true);
 
 	snake.push_front(head);
+}
+
+void Snake::check_self_eat() {
+	if (Playground::instance().get_playground_pos_status(
+				snake.front().r,
+				snake.front().c))
+			SDL_Log("hi, I ate myself");
+
+}
+
+void Snake::update_playground_board() {
+	Playground::instance().set_playground_board(snake.front().r, snake.front().c, true);
 }
 
 void Snake::check_apple() {
@@ -137,10 +144,15 @@ void Snake::check_apple() {
 	}
 }
 
+
 void Snake::update() {
 	++current_frame;
 	if (current_frame >= move_delay) {
 		move_snake();
+
+		check_self_eat();
+
+		update_playground_board();
 
 		check_apple();
 

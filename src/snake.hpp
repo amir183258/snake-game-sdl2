@@ -39,6 +39,8 @@ private:
 	void draw_head(SDL_Renderer* renderer);
 	void draw_body(SDL_Renderer* renderer);
 
+	void check_self_eat();
+	void update_playground_board();
 	void check_apple();
 
 	void move_snake();

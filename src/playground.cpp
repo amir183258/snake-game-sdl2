@@ -1,3 +1,4 @@
+#include <string>
 #include <cstdlib>					// for making random variables
 #include <ctime>					// for making random variables
 #include <SDL2/SDL.h>
@@ -17,7 +18,7 @@ Playground::Playground() {
 
 	// playground position
 	playground_bbox.x = (window_w - playground_bbox.w) / 2;
-	playground_bbox.y = (window_h - playground_bbox.h) / 2;
+	playground_bbox.y = (window_h - playground_bbox.h) / 2 + 40;
 
 	// playground textures
 	tile1 = load_texture("./assets/tile1.png", Game::instance().get_renderer());
@@ -90,8 +91,20 @@ void Playground::set_playground_board(size_t r, size_t c, bool value) {
 		return;
 	}
 
-	size_t idx = r * number_of_rows + c;
+	size_t idx = r * number_of_cols+ c + 1;
 	playground_board[idx] = value;
+}
+
+void Playground::print_playground() {
+	for (size_t i = 0; i < number_of_rows; ++i) {
+		std::string line = "";
+		for (size_t j = 0; j < number_of_cols; ++j)
+			if (playground_board[i * number_of_cols+ j + 1])
+				line += "1";
+			else
+				line += "0";
+		SDL_Log("%s", line.c_str());
+	}
 }
 
 SDL_Point Playground::get_free_playground_position() {
@@ -111,7 +124,7 @@ SDL_Point Playground::get_free_playground_position() {
 	}
 
 	SDL_Point result;
-	result.x = real_position / number_of_rows;
+	result.x = real_position / number_of_cols;
 	result.y = real_position % number_of_cols;
 
 	return result;
