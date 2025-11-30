@@ -1,3 +1,4 @@
+#include <iostream>
 #include <string>
 #include <cstdlib>					// for making random variables
 #include <ctime>					// for making random variables
@@ -22,7 +23,15 @@ Playground::Playground() {
 
 	// playground textures
 	tile1 = load_texture("./assets/tile1.png", Game::instance().get_renderer());
+	if (!tile1) {
+		std::cerr << "error loading tile1 texture for playground: " << IMG_GetError() << std::endl;
+		exit(1);
+	}
 	tile2 = load_texture("./assets/tile2.png", Game::instance().get_renderer());
+	if (!tile2) {
+		std::cerr << "error loading tile2 texture for playground: " << IMG_GetError() << std::endl;
+		exit(1);
+	}
 
 	// set all board elements to fasle
 	playground_board.resize(number_of_rows * number_of_cols, false);

@@ -1,3 +1,4 @@
+#include <iostream>
 #include <SDL2/SDL.h>
 #include "./snake.hpp"
 #include "./playground.hpp"
@@ -7,7 +8,16 @@
 Snake::Snake() {
 	// load snake textures
 	head_texture = load_texture("./assets/head.png", Game::instance().get_renderer());
+	if (!head_texture) {
+		std::cerr << "error loading snake head texture: " << IMG_GetError() << std::endl;
+		exit(1);
+	}
+
 	body_texture = load_texture("./assets/body.png", Game::instance().get_renderer());
+	if (!body_texture) {
+		std::cerr << "error loading snake body texture: " << IMG_GetError() << std::endl;
+		exit(1);
+	}
 	
 	// find the center of playground
 	size_t rows_center = Playground::instance().get_rows() / 2 - 1;

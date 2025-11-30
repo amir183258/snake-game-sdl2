@@ -1,3 +1,4 @@
+#include <iostream>
 #include <SDL2/SDL.h>
 #include "./apple.hpp"
 #include "./game.hpp"
@@ -7,6 +8,10 @@
 Apple::Apple() {
 	// loading apple texture
 	apple_texture = load_texture("./assets/apple.png", Game::instance().get_renderer());
+	if (!apple_texture) {
+		std::cerr << "error loading apple texture: " << IMG_GetError() << std::endl;
+		exit(1);
+	}
 
 	// spawn an apple
 	spawn();
