@@ -1,12 +1,14 @@
 #include <string>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include "./game.hpp"
 #include "./input_handler.hpp"
 #include "./playground.hpp"
 #include "./snake.hpp"
 #include "./apple.hpp"
 #include "./fps_handler.hpp"
+#include "./monitor.hpp"
 
 bool Game::init(std::string title, int xpos, int ypos, bool fullscreen) {
 
@@ -16,6 +18,11 @@ bool Game::init(std::string title, int xpos, int ypos, bool fullscreen) {
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0) {
 		SDL_Log("SDL init success");
+
+		if (TTF_Init() == -1) {
+			SDL_Log("error initializing SDL_ttf: %s\n", TTF_GetError());
+			exit(1);
+		}
 
 		SDL_DisplayMode DM;
 		int width = 600;									// default value
@@ -62,9 +69,13 @@ void Game::render() {
 	// draw apple
 	Apple::instance().draw(renderer);
 
+	// draw monitor
+	Monitor test {0, 0, "test"};
+	test.draw(renderer);
+
 	SDL_RenderPresent(renderer);
 
-	// draw fps
+	// handle fps
 	FPSHandler::instance().handle_fps();
 }
 

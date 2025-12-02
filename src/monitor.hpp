@@ -1,6 +1,7 @@
 #ifndef MONITOR_H
 #define MONITOR_H
 
+#include <string>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 
@@ -8,6 +9,8 @@
 class Monitor {
 private:
 	SDL_Rect bbox;
+
+	std::string text = "test";
 
 	static TTF_Font* text_font;
 	SDL_Color text_color;
@@ -18,7 +21,7 @@ private:
 
 public:
 	Monitor();
-	Monitor(int x_pos, int y_pos, int width, int height);
+	Monitor(int x_pos, int y_pos, std::string monitor_text);
 
 	void draw(SDL_Renderer* renderer);
 	void update();
