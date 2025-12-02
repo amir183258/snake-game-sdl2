@@ -1,0 +1,26 @@
+#ifndef PLAY_STATE_H
+#define PLAY_STATE_H
+
+#include "./game_state.hpp"
+#include "./playground.hpp"
+#include "./snake.hpp"
+#include "./apple.hpp"
+#include "./monitor.hpp"
+
+class PlayState: public GameState {
+private:
+	Playground* playground;
+	Snake* snake;
+	Apple* apple;
+	Monitor* score_monitor;
+
+public:
+	PlayState();
+
+	void draw() override;
+	void update() override;
+
+	~PlayState();
+};
+
+#endif

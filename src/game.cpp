@@ -9,6 +9,7 @@
 #include "./apple.hpp"
 #include "./fps_handler.hpp"
 #include "./monitor.hpp"
+#include "./play_state.hpp"
 
 bool Game::init(std::string title, int xpos, int ypos, bool fullscreen) {
 
@@ -57,21 +58,12 @@ bool Game::init(std::string title, int xpos, int ypos, bool fullscreen) {
 }
 
 void Game::render() {
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+	SDL_SetRenderDrawColor(renderer, 182, 208, 226, 255);
 	SDL_RenderClear(renderer);
 
-	// draw playground
-	Playground::instance().draw(renderer);
-
-	// draw snake
-	Snake::instance().draw(renderer);
-
-	// draw apple
-	Apple::instance().draw(renderer);
-
-	// draw monitor
-	Monitor test {0, 0, "test"};
-	test.draw(renderer);
+	// draw play state
+	PlayState test2;
+	test2.draw();
 
 	SDL_RenderPresent(renderer);
 
