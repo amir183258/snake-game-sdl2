@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include "./monitor.hpp"
@@ -55,8 +56,15 @@ void Monitor::draw(SDL_Renderer* renderer) {
 	SDL_RenderCopy(renderer, text_texture, nullptr, &bbox);
 }
 
-void Monitor::update() {
+void Monitor::update(std::string new_text) {
+	// set new text
+	text = new_text;
 
+	// destory previous texture
+	SDL_DestroyTexture(text_texture);
+
+	// new texture
+	text_texture = create_text_texture(Game::instance().get_renderer());
 }
 
 Monitor::~Monitor() {

@@ -18,6 +18,7 @@ add_executable(SnakeGame
     snake.cpp
     apple.cpp
     monitor.cpp
+
     play_state.cpp
 )
 

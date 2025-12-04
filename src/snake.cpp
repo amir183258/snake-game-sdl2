@@ -1,9 +1,13 @@
 #include <iostream>
+#include <string>
+#include <iomanip>
+#include <sstream>
 #include <SDL2/SDL.h>
 #include "./snake.hpp"
 #include "./playground.hpp"
 #include "./game.hpp"
 #include "./apple.hpp"
+#include "./monitor.hpp"
 
 Snake::Snake() {
 	// load snake textures
@@ -154,8 +158,7 @@ void Snake::check_apple() {
 	}
 }
 
-
-void Snake::update() {
+void Snake::update(Monitor* monitor) {
 	++current_frame;
 	if (current_frame >= move_delay) {
 		move_snake();
@@ -166,8 +169,12 @@ void Snake::update() {
 
 		check_apple();
 
-		if (eat_apple)
+		if (eat_apple) {
+			std::stringstream ss;
+			ss << std::setw(3) << std::setfill('0') << snake_size - 3;
+			monitor->update("SCORE " + ss.str());
 			eat_apple = false;
+		}
 		else {
 			Playground::instance().set_playground_board(snake.back().r, snake.back().c, false);
 			snake.pop_back();

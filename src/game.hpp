@@ -4,11 +4,15 @@
 #include <string>
 #include <SDL2/SDL.h>
 
+class PlayState;
+
 class Game {
 private:
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 	bool game_running;
+
+	PlayState* state;
 
 	Game() {}
 	

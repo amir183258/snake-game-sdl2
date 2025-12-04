@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <deque>
+#include "./monitor.hpp"
 
 enum class direction {
 	UP,
@@ -54,7 +55,7 @@ public:
 
 	void set_direction(direction dir) { current_dir = dir; }
 	void draw(SDL_Renderer* renderer);
-	void update();
+	void update(Monitor* monitor);
 
 	size_t get_snake_size() { return snake_size; }
 

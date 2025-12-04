@@ -24,7 +24,7 @@ public:
 	Monitor(int x_pos, int y_pos, std::string monitor_text);
 
 	void draw(SDL_Renderer* renderer);
-	void update();
+	void update(std::string new_text);
 
 	~Monitor();
 };

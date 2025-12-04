@@ -54,6 +54,8 @@ bool Game::init(std::string title, int xpos, int ypos, bool fullscreen) {
 	SDL_Log("game running success");
 	game_running = true;
 
+	state = new PlayState {};
+
 	return true;
 }
 
@@ -61,9 +63,7 @@ void Game::render() {
 	SDL_SetRenderDrawColor(renderer, 182, 208, 226, 255);
 	SDL_RenderClear(renderer);
 
-	// draw play state
-	PlayState test2;
-	test2.draw();
+	state->draw();
 
 	SDL_RenderPresent(renderer);
 
@@ -74,8 +74,10 @@ void Game::render() {
 void Game::update() {
 	InputHandler::instance().update();
 
+	state->update();
+
 	// update snake
-	Snake::instance().update();
+	//Snake::instance().update();
 }
 
 void Game::clean() {

@@ -1,6 +1,7 @@
 #ifndef PLAY_STATE_H
 #define PLAY_STATE_H
 
+#include <string>
 #include "./game_state.hpp"
 #include "./playground.hpp"
 #include "./snake.hpp"

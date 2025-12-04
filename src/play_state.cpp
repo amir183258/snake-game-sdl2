@@ -31,8 +31,7 @@ void PlayState::draw() {
 }
 
 void PlayState::update() {
-	return;
-
+	snake->update(score_monitor);
 }
 
 PlayState::~PlayState() {
