@@ -26,6 +26,14 @@ public:
 	void draw(SDL_Renderer* renderer);
 	void update(std::string new_text);
 
+	// get width and height
+	int get_width() { return bbox.w; }
+	int get_height() { return bbox.h; }
+
+	// set x and y
+	void set_x(int x) { bbox.x = x; }
+	void set_y(int y) { bbox.y = y; }
+
 	~Monitor();
 };
 #endif

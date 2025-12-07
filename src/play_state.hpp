@@ -14,6 +14,7 @@ private:
 	Snake* snake;
 	Apple* apple;
 	Monitor* score_monitor;
+	Monitor* time_monitor;
 
 public:
 	PlayState();

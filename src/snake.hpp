@@ -1,10 +1,10 @@
 #ifndef SNAKE_H
 #define SNAKE_H
 
+#include <functional>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <deque>
-#include "./monitor.hpp"
 
 enum class direction {
 	UP,
@@ -15,7 +15,6 @@ enum class direction {
 
 class Snake {
 private:
-
 	direction current_dir;
 	direction previous_dir;
 
@@ -40,7 +39,7 @@ private:
 	void draw_head(SDL_Renderer* renderer);
 	void draw_body(SDL_Renderer* renderer);
 
-	void check_self_eat();
+	bool check_self_eat();
 	void update_playground_board();
 	void check_apple();
 
@@ -55,9 +54,13 @@ public:
 
 	void set_direction(direction dir) { current_dir = dir; }
 	void draw(SDL_Renderer* renderer);
-	void update(Monitor* monitor);
+	void update();
 
 	size_t get_snake_size() { return snake_size; }
+
+	// callbacks
+	std::function<void()> collision_call_back;
+	std::function<void(int score)> eat_apple_call_back;
 
 	~Snake();
 };

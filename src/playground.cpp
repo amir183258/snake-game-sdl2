@@ -19,7 +19,7 @@ Playground::Playground() {
 
 	// playground position
 	playground_bbox.x = (window_w - playground_bbox.w) / 2;
-	playground_bbox.y = (window_h - playground_bbox.h) / 2 + 40;
+	playground_bbox.y = (window_h - playground_bbox.h) / 2 + 25;			// 25 pixels for score monitor
 
 	// playground textures
 	tile1 = load_texture("./assets/tile1.png", Game::instance().get_renderer());

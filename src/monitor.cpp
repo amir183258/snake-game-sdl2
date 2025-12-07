@@ -15,7 +15,7 @@ Monitor::Monitor(int x_pos, int y_pos, std::string monitor_text) :
 	bbox {x_pos, y_pos, 0, 0} {
 	// load font
 	if (!text_font) {
-		text_font = TTF_OpenFont("./assets/arcade_font.ttf", 28);
+		text_font = TTF_OpenFont("./assets/press_start_font.ttf", 15);
 
 		if (!text_font) {
 			std::cerr << "error loading font: " << TTF_GetError() << std::endl;
@@ -38,7 +38,7 @@ SDL_Texture* Monitor::create_text_texture(SDL_Renderer* renderer) {
 		exit(1);
 	}
 	// updating bbox
-	bbox = {0, 0, text_surface->w, text_surface->h};
+	bbox = {bbox.x, bbox.y, text_surface->w, text_surface->h};
 
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, text_surface);
 	if (!texture) {

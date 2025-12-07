@@ -1,14 +1,11 @@
 #include <iostream>
 #include <string>
-#include <iomanip>
-#include <sstream>
 #include <SDL2/SDL.h>
 #include "./snake.hpp"
 #include "./playground.hpp"
 #include "./game.hpp"
 #include "./apple.hpp"
 #include "./monitor.hpp"
-
 Snake::Snake() {
 	// load snake textures
 	head_texture = load_texture("./assets/head.png", Game::instance().get_renderer());
@@ -136,12 +133,12 @@ void Snake::move_snake() {
 	snake.push_front(head);
 }
 
-void Snake::check_self_eat() {
+bool Snake::check_self_eat() {
 	if (Playground::instance().get_playground_pos_status(
 				snake.front().r,
 				snake.front().c))
-			SDL_Log("hi, I ate myself");
-
+		return true;
+	return false;
 }
 
 void Snake::update_playground_board() {
@@ -158,22 +155,27 @@ void Snake::check_apple() {
 	}
 }
 
-void Snake::update(Monitor* monitor) {
+void Snake::update() {
 	++current_frame;
 	if (current_frame >= move_delay) {
 		move_snake();
 
-		check_self_eat();
+		if (check_self_eat() && collision_call_back)
+			collision_call_back();
+
 
 		update_playground_board();
 
 		check_apple();
 
-		if (eat_apple) {
-			std::stringstream ss;
-			ss << std::setw(3) << std::setfill('0') << snake_size - 3;
-			monitor->update("SCORE " + ss.str());
+		if (eat_apple && eat_apple_call_back) {
+			eat_apple_call_back(snake_size - 3);
 			eat_apple = false;
+
+			//std::stringstream ss;
+			//ss << std::setw(4) << std::setfill('0') << snake_size - 3;
+			//monitor->update("SCORE " + ss.str());
+			//eat_apple = false;
 		}
 		else {
 			Playground::instance().set_playground_board(snake.back().r, snake.back().c, false);
