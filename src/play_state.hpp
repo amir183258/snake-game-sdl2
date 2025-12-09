@@ -15,6 +15,12 @@ private:
 	Apple* apple;
 	Monitor* score_monitor;
 	Monitor* time_monitor;
+	
+	// for handling time
+	Uint32 previous_time;
+
+	// private functions
+	void update_time_monitor();
 
 public:
 	PlayState();

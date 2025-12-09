@@ -18,10 +18,12 @@ PlayState::PlayState() {
 	playground = &Playground::instance();
 
 	// setting up the snake
+	// TODO handle self eat loss
 	snake = &Snake::instance();
 	snake->collision_call_back = [this]() {
 		SDL_Log("Hi, I ate myself!");
 	};
+	// TODO handle out of playground loss
 	snake->eat_apple_call_back = [this](int score) {
 		std::stringstream ss;
 		ss << std::setw(4) << std::setfill('0') << score;
@@ -37,11 +39,13 @@ PlayState::PlayState() {
 	score_monitor->set_y(playground_bbox.y - score_monitor->get_height());
 
 	// time monitor
-	time_monitor = new Monitor {0 , 0, "00:00"};
+	time_monitor = new Monitor {0 , 0, "000:00"};
 	time_monitor->set_y(playground_bbox.y - score_monitor->get_height());
 
 	int xpos = playground_bbox.x + playground_bbox.w - time_monitor->get_width();
 	time_monitor->set_x(xpos);
+
+	previous_time = 0;
 }
 
 void PlayState::draw() {
@@ -54,6 +58,30 @@ void PlayState::draw() {
 
 void PlayState::update() {
 	snake->update();
+
+	// update time monitor
+	update_time_monitor();
+}
+
+void PlayState::update_time_monitor() {
+	Uint32 ms = SDL_GetTicks();
+	unsigned long int total_seconds = ms / 1000;
+
+	if (total_seconds != previous_time) {
+		previous_time = total_seconds;
+
+		int minute = total_seconds / 60;
+		int seconds = total_seconds % 60;
+
+		// create string to display
+		std::ostringstream oss;
+		oss << std::setw(3) << std::setfill('0') << minute << ":" <<
+			std::setw(2) << std::setfill('0') << seconds;
+
+		std::string formatted_time = oss.str();
+
+		time_monitor->update(formatted_time);
+	}
 }
 
 PlayState::~PlayState() {
