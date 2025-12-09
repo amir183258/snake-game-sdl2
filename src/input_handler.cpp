@@ -2,6 +2,7 @@
 #include "./input_handler.hpp"
 #include "./game.hpp"
 #include "./snake.hpp"
+#include "./state_manager.hpp"
 
 void InputHandler::update() {
 	SDL_Event event;
@@ -14,20 +15,7 @@ void InputHandler::update() {
 		if (event.type == SDL_KEYDOWN) {
 			SDL_Keycode key = event.key.keysym.sym;
 
-			switch (key) {
-			case SDLK_w:
-				Snake::instance().set_direction(direction::UP);
-				break;
-			case SDLK_d:
-				Snake::instance().set_direction(direction::RIGHT);
-				break;
-			case SDLK_s:
-				Snake::instance().set_direction(direction::DOWN);
-				break;
-			case SDLK_a:
-				Snake::instance().set_direction(direction::LEFT);
-			}
-
+			StateManager::instance().handle_input(key);
 		}
 	}
 }

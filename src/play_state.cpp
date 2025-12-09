@@ -11,9 +11,6 @@
 #include "./monitor.hpp"
 
 PlayState::PlayState() {
-	// setting up the renderer
-	GameState::renderer = Game::instance().get_renderer();
-
 	// setting up playground
 	playground = &Playground::instance();
 
@@ -48,7 +45,23 @@ PlayState::PlayState() {
 	previous_time = 0;
 }
 
-void PlayState::draw() {
+void PlayState::handle_input(SDL_Keycode key) {
+	switch (key) {
+	case SDLK_w:
+		snake->set_direction(direction::UP);
+		break;
+	case SDLK_d:
+		snake->set_direction(direction::RIGHT);
+		break;
+	case SDLK_s:
+		snake->set_direction(direction::DOWN);
+		break;
+	case SDLK_a:
+		snake->set_direction(direction::LEFT);
+	}
+}
+
+void PlayState::draw(SDL_Renderer* renderer) {
 	playground->draw(renderer);
 	snake->draw(renderer);
 	apple->draw(renderer);

@@ -8,9 +8,8 @@ class GameState {
 private:
 
 public:
-	SDL_Renderer* renderer;
-
-	virtual void draw() = 0;
+	virtual void handle_input(SDL_Keycode key) = 0;
+	virtual void draw(SDL_Renderer* renderer) = 0;
 	virtual void update() = 0;
 
 	virtual ~GameState() {}

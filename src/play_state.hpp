@@ -2,6 +2,7 @@
 #define PLAY_STATE_H
 
 #include <string>
+#include <SDL2/SDL.h>
 #include "./game_state.hpp"
 #include "./playground.hpp"
 #include "./snake.hpp"
@@ -25,7 +26,8 @@ private:
 public:
 	PlayState();
 
-	void draw() override;
+	void handle_input(SDL_Keycode key) override;
+	void draw(SDL_Renderer* renderer) override;
 	void update() override;
 
 	~PlayState();

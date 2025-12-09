@@ -10,6 +10,7 @@
 #include "./fps_handler.hpp"
 #include "./monitor.hpp"
 #include "./play_state.hpp"
+#include "./state_manager.hpp"
 
 bool Game::init(std::string title, int xpos, int ypos, bool fullscreen) {
 
@@ -51,10 +52,10 @@ bool Game::init(std::string title, int xpos, int ypos, bool fullscreen) {
 		return false;
 	}
 
+	StateManager::instance().set_renderer(renderer);
+
 	SDL_Log("game running success");
 	game_running = true;
-
-	state = new PlayState {};
 
 	return true;
 }
@@ -63,7 +64,7 @@ void Game::render() {
 	SDL_SetRenderDrawColor(renderer, 182, 208, 226, 255);
 	SDL_RenderClear(renderer);
 
-	state->draw();
+	StateManager::instance().draw();
 
 	SDL_RenderPresent(renderer);
 
@@ -73,11 +74,7 @@ void Game::render() {
 
 void Game::update() {
 	InputHandler::instance().update();
-
-	state->update();
-
-	// update snake
-	//Snake::instance().update();
+	StateManager::instance().update();
 }
 
 void Game::clean() {
