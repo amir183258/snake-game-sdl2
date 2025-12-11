@@ -2,20 +2,25 @@
 #include "./pause_state.hpp"
 #include "./menu_button.hpp"
 #include "./monitor.hpp"
+#include "./game.hpp"
 
 PauseState::PauseState() {
-	/*
-	MenuButton test_button {"this is test"};
+	number_of_buttons = 2;
+	// menu bbox padding
+	padding_x = 25;
+	padding_y = 25;
+	// menu bbox
+	menu_bbox.w = 300 + 2 * padding_x;
+	menu_bbox.h = 50 * number_of_buttons + padding_y * (number_of_buttons + 1);
+	
+	int window_w, window_h;
+	SDL_GetWindowSize(Game::instance().get_window(), &window_w, &window_h);
 
-	test_button.set_x(0);
-	test_button.set_y(0);
-	test_button.set_width(300);
-	test_button.set_height(100);
+	menu_bbox.x = (window_w - menu_bbox.w) / 2;
+	menu_bbox.y = (window_h - menu_bbox.h) / 2;
 
-	buttons.push_back(test_button);
-	*/
-	//test_monitor = new Monitor {0, 0, "test"};	
-	test_button = new MenuButton {"test"};
+	resume_button = new MenuButton {"Resume"};
+	quit_button = new MenuButton {"Quit"};
 }
 
 void PauseState::handle_input(SDL_Keycode key) {
@@ -23,9 +28,20 @@ void PauseState::handle_input(SDL_Keycode key) {
 }
 
 void PauseState::draw(SDL_Renderer* renderer) {
-	//buttons[0].draw(renderer);
-	//test_monitor->draw(renderer);
-	test_button->draw(renderer);
+
+	// draw menu bbox
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	SDL_RenderDrawRect(renderer, &menu_bbox);
+
+	// draw buttons
+	int draw_height = menu_bbox.y + padding_y;
+
+	resume_button->set_y(draw_height);
+	resume_button->draw(renderer);
+
+	draw_height += 50 + padding_y;
+	quit_button->set_y(draw_height);
+	quit_button->draw(renderer);
 }
 
 void PauseState::update() {

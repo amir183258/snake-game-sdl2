@@ -15,10 +15,7 @@ private:
 public:
 	MenuButton(std::string text);
 
-	void set_x(int x) { bbox.x = x; }
-	void set_y(int y) { bbox.y = y; }
-	void set_width(int width) { bbox.w = width; }
-	void set_height(int height) { bbox.h = height; }
+	void set_y(int y);
 
 	void set_selected(bool s) { selected = s; }
 

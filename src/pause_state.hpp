@@ -1,7 +1,6 @@
 #ifndef PAUSE_STATE_H
 #define PAUSE_STATE_H
 
-#include <vector>
 #include <SDL2/SDL.h>
 #include "./game_state.hpp"
 #include "./menu_button.hpp"
@@ -9,9 +8,15 @@
 
 class PauseState: public GameState {
 private:
-	std::vector<MenuButton> buttons;
-	Monitor *test_monitor;
-	MenuButton* test_button;
+	int number_of_buttons;
+
+	int padding_x;
+	int padding_y;
+
+	SDL_Rect menu_bbox;
+
+	MenuButton* resume_button;
+	MenuButton* quit_button;
 
 public:
 	PauseState();
@@ -21,7 +26,6 @@ public:
 	void update() override;
 
 	~PauseState();
-
 };
 
 #endif
