@@ -18,8 +18,10 @@ add_executable(SnakeGame
     snake.cpp
     apple.cpp
     monitor.cpp
-    play_state.cpp
+    menu_button.cpp
     state_manager.cpp
+    play_state.cpp
+    pause_state.cpp
 )
 
 set(ASSETS_DIR ${CMAKE_SOURCE_DIR}/assets)

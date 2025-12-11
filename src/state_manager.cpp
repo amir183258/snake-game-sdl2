@@ -1,9 +1,11 @@
 #include <SDL2/SDL.h>
 #include "./state_manager.hpp"
 #include "./play_state.hpp"
+#include "./pause_state.hpp"
 
 StateManager::StateManager() {
-	current_state = new PlayState();
+	//current_state = new PlayState();
+	current_state = new PauseState {};
 }
 
 void StateManager::handle_input(SDL_Keycode key) {
