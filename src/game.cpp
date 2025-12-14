@@ -95,3 +95,11 @@ SDL_Texture* load_texture(std::string path, SDL_Renderer* renderer) {
 	return texture;
 }
 
+// TODO use this function in all other classes
+SDL_Texture* load_texture(std::string path) {
+	SDL_Renderer* renderer = Game::instance().get_renderer();
+	SDL_Texture* texture = IMG_LoadTexture(renderer, path.c_str());
+	if (!texture)
+		SDL_Log("failed to load texture: %s, SDL_image Error: %s", path.c_str(), IMG_GetError());
+	return texture;
+}

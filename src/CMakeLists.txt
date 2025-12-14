@@ -18,7 +18,6 @@ add_executable(SnakeGame
     snake.cpp
     apple.cpp
     monitor.cpp
-    menu_button.cpp
     state_manager.cpp
     play_state.cpp
     pause_state.cpp

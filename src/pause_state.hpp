@@ -1,22 +1,27 @@
 #ifndef PAUSE_STATE_H
 #define PAUSE_STATE_H
 
+#include <vector>
 #include <SDL2/SDL.h>
 #include "./game_state.hpp"
-#include "./menu_button.hpp"
-#include "./monitor.hpp"
 
 class PauseState: public GameState {
 private:
-	int number_of_buttons;
+	int button_width;
+	int button_height;
 
-	int padding_x;
-	int padding_y;
+	int space_between_buttons;
 
-	SDL_Rect menu_bbox;
+	int current_button;
 
-	MenuButton* resume_button;
-	MenuButton* quit_button;
+	SDL_Texture* button_resume;
+	SDL_Texture* button_quit;
+
+	std::vector<SDL_Texture*> buttons;
+
+	// draw position
+	int draw_pos_x;
+	int draw_pos_y;
 
 public:
 	PauseState();

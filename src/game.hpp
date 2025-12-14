@@ -41,5 +41,6 @@ public:
 
 // helper functions
 SDL_Texture* load_texture(std::string path, SDL_Renderer* renderer);
+SDL_Texture* load_texture(std::string path);
 
 #endif
