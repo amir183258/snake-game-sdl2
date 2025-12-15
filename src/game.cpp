@@ -53,6 +53,7 @@ bool Game::init(std::string title, int xpos, int ypos, bool fullscreen) {
 	}
 
 	StateManager::instance().set_renderer(renderer);
+	StateManager::instance().add_game_state(new PlayState {});
 
 	SDL_Log("game running success");
 	game_running = true;
@@ -61,6 +62,7 @@ bool Game::init(std::string title, int xpos, int ypos, bool fullscreen) {
 }
 
 void Game::render() {
+	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	SDL_SetRenderDrawColor(renderer, 182, 208, 226, 255);
 	SDL_RenderClear(renderer);
 

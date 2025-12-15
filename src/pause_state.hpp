@@ -15,6 +15,7 @@ private:
 	int current_button;
 
 	SDL_Texture* button_resume;
+	SDL_Texture* button_restart;
 	SDL_Texture* button_quit;
 
 	std::vector<SDL_Texture*> buttons;

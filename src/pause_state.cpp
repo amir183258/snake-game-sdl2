@@ -1,10 +1,13 @@
 #include <SDL2/SDL.h>
 #include "./pause_state.hpp"
 #include "./game.hpp"
+#include "./state_manager.hpp"
+#include "./play_state.hpp"
 
 PauseState::PauseState() {
 	// import button textures, they are same size
 	button_resume = load_texture("./assets/pause_state/button_resume.png");
+	button_restart = load_texture("./assets/pause_state/button_quit.png");
 	button_quit = load_texture("./assets/pause_state/button_quit.png");
 
 	// vertical space between buttons
@@ -16,6 +19,7 @@ PauseState::PauseState() {
 
 	// append buttons to buttons list
 	buttons.push_back(button_resume);
+	buttons.push_back(button_restart);
 	buttons.push_back(button_quit);
 
 	// set current button to the first button
@@ -34,10 +38,56 @@ PauseState::PauseState() {
 }
 
 void PauseState::handle_input(SDL_Keycode key) {
+	switch (key) {
+	case SDLK_w:
+		--current_button;
+		if (current_button < 0)
+			current_button = buttons.size() - 1;
+		break;
+	case SDLK_s:
+		++current_button;
+		if (current_button >= buttons.size())
+			current_button = 0;
+		break;
+	case SDLK_ESCAPE:
+		PlayState::pause_duration += SDL_GetTicks() - PlayState::state_time;
+		StateManager::instance().remove_last_game_state();
+		break;
+	case SDLK_RETURN:
+		switch (current_button) {
+		case 0: // resume button, similar to SDLK_ESCAPE
+			StateManager::instance().remove_last_game_state();
+			PlayState::pause_duration += SDL_GetTicks() - PlayState::state_time;
+			break;
+		case 1:
+			PlayState::pause_duration = 0;
+			StateManager::instance().remove_first_game_state();
+			StateManager::instance().add_game_state(new PlayState {});
+			StateManager::instance().remove_first_game_state();
 
+			break;
+		case 2: // quit button
+			Game::instance().set_running(false);
+		}
+	}
 }
 
 void PauseState::draw(SDL_Renderer* renderer) {
+	// drawing a big rectangle
+	int window_w;
+	int window_h;
+	SDL_GetWindowSize(Game::instance().get_window(), &window_w, &window_h);
+
+	SDL_Rect window_rect;
+	window_rect.x = 0;
+	window_rect.y = 0;
+	window_rect.w = window_w;
+	window_rect.h = window_h;
+
+	SDL_SetRenderDrawColor(renderer, 182, 208, 226, 100);
+	SDL_RenderFillRect(renderer, &window_rect);
+
+	// draw buttons
 	SDL_Rect source_rect;
 	source_rect.x = 0;
 	source_rect.y = 0;
@@ -68,5 +118,8 @@ void PauseState::update() {
 }
 
 PauseState::~PauseState() {
+	for (int i = 0; i < buttons.size(); ++i)
+		SDL_DestroyTexture(buttons[i]);
 
+	SDL_Log("destroying pause state textures...");
 }

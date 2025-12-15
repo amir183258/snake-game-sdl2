@@ -24,6 +24,10 @@ private:
 	void update_time_monitor();
 
 public:
+	// these two variables manage time between pause and play states
+	static Uint32 state_time;
+	static Uint32 pause_duration;
+
 	PlayState();
 
 	void handle_input(SDL_Keycode key) override;

@@ -9,6 +9,11 @@
 #include "./snake.hpp"
 #include "./apple.hpp"
 #include "./monitor.hpp"
+#include "./pause_state.hpp"
+#include "./state_manager.hpp"
+
+Uint32 PlayState::state_time = 0;
+Uint32 PlayState::pause_duration = 0;
 
 PlayState::PlayState() {
 	// setting up playground
@@ -29,6 +34,7 @@ PlayState::PlayState() {
 
 	// setting up apple
 	apple = &Apple::instance();
+	apple->spawn();
 
 	// score monitor
 	SDL_Rect playground_bbox = playground->get_bbox();
@@ -58,6 +64,10 @@ void PlayState::handle_input(SDL_Keycode key) {
 		break;
 	case SDLK_a:
 		snake->set_direction(direction::LEFT);
+		break;
+	case SDLK_ESCAPE:
+		StateManager::instance().add_game_state(new PauseState {});
+		state_time = SDL_GetTicks();
 	}
 }
 
@@ -78,7 +88,8 @@ void PlayState::update() {
 
 void PlayState::update_time_monitor() {
 	Uint32 ms = SDL_GetTicks();
-	unsigned long int total_seconds = ms / 1000;
+
+	unsigned long int total_seconds = (ms - pause_duration) / 1000;
 
 	if (total_seconds != previous_time) {
 		previous_time = total_seconds;
