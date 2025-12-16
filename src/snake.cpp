@@ -19,7 +19,38 @@ Snake::Snake() {
 		std::cerr << "error loading snake body texture: " << IMG_GetError() << std::endl;
 		exit(1);
 	}
+
+	reset_snake();
 	
+	/*
+	// find the center of playground
+	size_t rows_center = Playground::instance().get_rows() / 2 - 1;
+	size_t cols_center = Playground::instance().get_cols() / 2 + 1;
+
+	// snake apple flag
+	eat_apple = false;
+
+	// snake size
+	snake_size = 3;
+
+	// create 3 tiles snake and mark them on the board
+	current_dir = direction::RIGHT;
+	previous_dir = direction::RIGHT;
+
+	snake.push_front({rows_center, cols_center - 2});
+	Playground::instance().set_playground_board(rows_center, cols_center - 2, true);
+
+	snake.push_front({rows_center, cols_center - 1});
+	Playground::instance().set_playground_board(rows_center, cols_center - 1, true);
+
+	snake.push_front({rows_center, cols_center - 0});
+	Playground::instance().set_playground_board(rows_center, cols_center - 0, true);
+	*/
+}
+
+void Snake::reset_snake() {
+	snake.clear();
+
 	// find the center of playground
 	size_t rows_center = Playground::instance().get_rows() / 2 - 1;
 	size_t cols_center = Playground::instance().get_cols() / 2 + 1;

@@ -33,8 +33,14 @@ Playground::Playground() {
 		exit(1);
 	}
 
+	playground_board.resize(number_of_rows * number_of_rows, false);
+
+	reset_playground_board();
+}
+
+void Playground::reset_playground_board() {
 	// set all board elements to fasle
-	playground_board.resize(number_of_rows * number_of_cols, false);
+	std::fill(playground_board.begin(), playground_board.end(), false);
 }
 
 void Playground::draw(SDL_Renderer* renderer) {
@@ -62,6 +68,7 @@ void Playground::draw(SDL_Renderer* renderer) {
 
 	// SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);					for debug
 	// SDL_RenderDrawRect(renderer, &playground_bbox);					for debug
+	print_playground();
 }
 
 void Playground::set_dimension(size_t r, size_t c) {

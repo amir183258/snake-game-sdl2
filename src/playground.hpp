@@ -58,6 +58,9 @@ public:
 	// print playground
 	void print_playground();
 
+	// reset playground
+	void reset_playground_board();
+
 	// get a random free position (to draw apple or other staff)
 	SDL_Point get_free_playground_position();
 

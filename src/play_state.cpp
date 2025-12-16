@@ -10,6 +10,7 @@
 #include "./apple.hpp"
 #include "./monitor.hpp"
 #include "./pause_state.hpp"
+#include "./loss_state.hpp"
 #include "./state_manager.hpp"
 
 Uint32 PlayState::state_time = 0;
@@ -23,7 +24,7 @@ PlayState::PlayState() {
 	// TODO handle self eat loss
 	snake = &Snake::instance();
 	snake->collision_call_back = [this]() {
-		SDL_Log("Hi, I ate myself!");
+		StateManager::instance().add_game_state(new LossState {});
 	};
 	// TODO handle out of playground loss
 	snake->eat_apple_call_back = [this](int score) {
@@ -49,6 +50,10 @@ PlayState::PlayState() {
 	time_monitor->set_x(xpos);
 
 	previous_time = 0;
+
+	// resetting snake and background
+	playground->reset_playground_board();
+	snake->reset_snake();
 }
 
 void PlayState::handle_input(SDL_Keycode key) {

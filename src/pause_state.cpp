@@ -7,7 +7,7 @@
 PauseState::PauseState() {
 	// import button textures, they are same size
 	button_resume = load_texture("./assets/pause_state/button_resume.png");
-	button_restart = load_texture("./assets/pause_state/button_quit.png");
+	button_restart = load_texture("./assets/pause_state/button_restart.png");
 	button_quit = load_texture("./assets/pause_state/button_quit.png");
 
 	// vertical space between buttons
@@ -60,7 +60,7 @@ void PauseState::handle_input(SDL_Keycode key) {
 			PlayState::pause_duration += SDL_GetTicks() - PlayState::state_time;
 			break;
 		case 1:
-			PlayState::pause_duration = 0;
+			PlayState::pause_duration = SDL_GetTicks();
 			StateManager::instance().remove_first_game_state();
 			StateManager::instance().add_game_state(new PlayState {});
 			StateManager::instance().remove_first_game_state();

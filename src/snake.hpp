@@ -30,7 +30,7 @@ private:
 	bool eat_apple;
 
 	// velocity handling
-	size_t move_delay = 10;				// every move_delay frames snake moves
+	size_t move_delay = 60;				// every move_delay frames snake moves
 	size_t current_frame = 0;
 
 	// snake size
@@ -57,6 +57,8 @@ public:
 	void update();
 
 	size_t get_snake_size() { return snake_size; }
+
+	void reset_snake();
 
 	// callbacks
 	std::function<void()> collision_call_back;
