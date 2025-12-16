@@ -53,7 +53,7 @@ public:
 	// get playground board, its size and its value (status)
 	std::vector<bool> get_playground_board() { return playground_board; }
 	size_t get_playground_board_size() { return number_of_rows * number_of_cols; }
-	bool get_playground_pos_status(size_t r, size_t c) { return playground_board[r * number_of_cols + c + 1]; }
+	bool get_playground_pos_status(size_t r, size_t c) { return playground_board[r * number_of_cols + c]; }
 
 	// print playground
 	void print_playground();

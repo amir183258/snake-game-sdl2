@@ -33,7 +33,7 @@ Playground::Playground() {
 		exit(1);
 	}
 
-	playground_board.resize(number_of_rows * number_of_rows, false);
+	playground_board.resize(number_of_rows * number_of_cols, false);
 
 	reset_playground_board();
 }
@@ -107,7 +107,7 @@ void Playground::set_playground_board(size_t r, size_t c, bool value) {
 		return;
 	}
 
-	size_t idx = r * number_of_cols+ c + 1;
+	size_t idx = r * number_of_cols+ c;
 	playground_board[idx] = value;
 }
 
@@ -115,7 +115,7 @@ void Playground::print_playground() {
 	for (size_t i = 0; i < number_of_rows; ++i) {
 		std::string line = "";
 		for (size_t j = 0; j < number_of_cols; ++j)
-			if (playground_board[i * number_of_cols+ j + 1])
+			if (playground_board[i * number_of_cols+ j])
 				line += "1";
 			else
 				line += "0";
@@ -128,20 +128,23 @@ SDL_Point Playground::get_free_playground_position() {
 	std::srand(static_cast<unsigned int>(std::time(nullptr)));
 
 	// making random pos
-	size_t free_board_spaces = playground_board.size() -
+	int free_board_spaces = playground_board.size() -
 		Snake::instance().get_snake_size();
-	size_t free_space_position = std::rand() % free_board_spaces;
+	int free_space_position = std::rand() % free_board_spaces;
 
-	size_t real_position = 0;
-	while (free_space_position) {
+	int real_position = 0;
+	while (free_space_position >= 0) {
 		if (!playground_board[real_position])				// if there were no snake then add real position
 			--free_space_position;
 		++real_position;
 	}
+	--real_position; // the last one is reduced
 
 	SDL_Point result;
 	result.x = real_position / number_of_cols;
 	result.y = real_position % number_of_cols;
+
+	SDL_Log("an apple spawned!");
 
 	return result;
 }

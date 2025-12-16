@@ -30,7 +30,7 @@ private:
 	bool eat_apple;
 
 	// velocity handling
-	size_t move_delay = 60;				// every move_delay frames snake moves
+	size_t move_delay = 10;				// every move_delay frames snake moves
 	size_t current_frame = 0;
 
 	// snake size
