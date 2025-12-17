@@ -7,8 +7,7 @@
 #include <deque>
 
 enum class direction {
-	UP,
-	DOWN,
+	UP, DOWN,
 	LEFT,
 	RIGHT
 };
@@ -43,7 +42,7 @@ private:
 	void update_playground_board();
 	void check_apple();
 
-	void move_snake();
+	bool move_snake();
 
 	Snake();
 public:

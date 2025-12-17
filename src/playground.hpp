@@ -58,6 +58,9 @@ public:
 	// print playground
 	void print_playground();
 
+	// checks if r and c are valid
+	bool is_valid_coords(int r, int c);
+
 	// reset playground
 	void reset_playground_board();
 

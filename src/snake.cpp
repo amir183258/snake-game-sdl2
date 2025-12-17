@@ -21,31 +21,6 @@ Snake::Snake() {
 	}
 
 	reset_snake();
-	
-	/*
-	// find the center of playground
-	size_t rows_center = Playground::instance().get_rows() / 2 - 1;
-	size_t cols_center = Playground::instance().get_cols() / 2 + 1;
-
-	// snake apple flag
-	eat_apple = false;
-
-	// snake size
-	snake_size = 3;
-
-	// create 3 tiles snake and mark them on the board
-	current_dir = direction::RIGHT;
-	previous_dir = direction::RIGHT;
-
-	snake.push_front({rows_center, cols_center - 2});
-	Playground::instance().set_playground_board(rows_center, cols_center - 2, true);
-
-	snake.push_front({rows_center, cols_center - 1});
-	Playground::instance().set_playground_board(rows_center, cols_center - 1, true);
-
-	snake.push_front({rows_center, cols_center - 0});
-	Playground::instance().set_playground_board(rows_center, cols_center - 0, true);
-	*/
 }
 
 void Snake::reset_snake() {
@@ -130,7 +105,7 @@ void Snake::draw(SDL_Renderer* renderer) {
 }
 
 // update snake status
-void Snake::move_snake() {
+bool Snake::move_snake() {
 	playground_position head = snake.front();
 
 	size_t new_row = head.r;
@@ -154,14 +129,18 @@ void Snake::move_snake() {
 		current_dir = previous_dir;
 		move_snake();
 
-		return;
+		return false;
 	}
+
+	if (!Playground::instance().is_valid_coords(new_row, new_col))
+		return false;
 
 	head.r = new_row;
 	head.c = new_col;
 
-
 	snake.push_front(head);
+
+	return true;
 }
 
 bool Snake::check_self_eat() {
@@ -189,10 +168,16 @@ void Snake::check_apple() {
 void Snake::update() {
 	++current_frame;
 	if (current_frame >= move_delay) {
-		move_snake();
-
-		if (check_self_eat() && collision_call_back)
+		// handle collision to the walls
+		if (!move_snake() && collision_call_back) {
 			collision_call_back();
+			return;
+		}
+
+		if (check_self_eat() && collision_call_back) {
+			collision_call_back();
+			return;
+		}
 
 
 		update_playground_board();

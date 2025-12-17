@@ -21,12 +21,11 @@ PlayState::PlayState() {
 	playground = &Playground::instance();
 
 	// setting up the snake
-	// TODO handle self eat loss
 	snake = &Snake::instance();
 	snake->collision_call_back = [this]() {
 		StateManager::instance().add_game_state(new LossState {});
 	};
-	// TODO handle out of playground loss
+
 	snake->eat_apple_call_back = [this](int score) {
 		std::stringstream ss;
 		ss << std::setw(4) << std::setfill('0') << score;

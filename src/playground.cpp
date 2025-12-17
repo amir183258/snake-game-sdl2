@@ -68,7 +68,6 @@ void Playground::draw(SDL_Renderer* renderer) {
 
 	// SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);					for debug
 	// SDL_RenderDrawRect(renderer, &playground_bbox);					for debug
-	print_playground();
 }
 
 void Playground::set_dimension(size_t r, size_t c) {
@@ -121,6 +120,12 @@ void Playground::print_playground() {
 				line += "0";
 		SDL_Log("%s", line.c_str());
 	}
+}
+
+bool Playground::is_valid_coords(int r, int c) {
+	if (r < 0 || r >= number_of_rows || c < 0 || c >= number_of_cols)
+		return false;
+	return true;
 }
 
 SDL_Point Playground::get_free_playground_position() {
