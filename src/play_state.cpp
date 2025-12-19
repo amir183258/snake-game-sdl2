@@ -11,6 +11,7 @@
 #include "./monitor.hpp"
 #include "./pause_state.hpp"
 #include "./loss_state.hpp"
+#include "./win_state.hpp"
 #include "./state_manager.hpp"
 
 Uint32 PlayState::state_time = 0;
@@ -30,6 +31,9 @@ PlayState::PlayState() {
 		std::stringstream ss;
 		ss << std::setw(4) << std::setfill('0') << score;
 		score_monitor->update("SCORE: " + ss.str());
+
+		if (score == playground->get_playground_board_size() - 4)
+			StateManager::instance().add_game_state(new WinState {});
 	};
 
 	// setting up apple

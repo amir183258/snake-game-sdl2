@@ -129,7 +129,7 @@ bool Snake::move_snake() {
 		current_dir = previous_dir;
 		move_snake();
 
-		return false;
+		return true;
 	}
 
 	if (!Playground::instance().is_valid_coords(new_row, new_col))
@@ -178,7 +178,6 @@ void Snake::update() {
 			collision_call_back();
 			return;
 		}
-
 
 		update_playground_board();
 

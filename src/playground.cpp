@@ -149,8 +149,6 @@ SDL_Point Playground::get_free_playground_position() {
 	result.x = real_position / number_of_cols;
 	result.y = real_position % number_of_cols;
 
-	SDL_Log("an apple spawned!");
-
 	return result;
 }
 

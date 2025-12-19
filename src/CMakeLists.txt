@@ -22,6 +22,7 @@ add_executable(SnakeGame
     play_state.cpp
     pause_state.cpp
     loss_state.cpp
+    win_state.cpp
 )
 
 set(ASSETS_DIR ${CMAKE_SOURCE_DIR}/assets)
