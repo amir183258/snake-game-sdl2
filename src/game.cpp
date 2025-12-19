@@ -11,6 +11,7 @@
 #include "./monitor.hpp"
 #include "./play_state.hpp"
 #include "./state_manager.hpp"
+#include "./start_menu_state.hpp"
 
 bool Game::init(std::string title, int xpos, int ypos, bool fullscreen) {
 
@@ -52,8 +53,9 @@ bool Game::init(std::string title, int xpos, int ypos, bool fullscreen) {
 		return false;
 	}
 
+	// add game state
 	StateManager::instance().set_renderer(renderer);
-	StateManager::instance().add_game_state(new PlayState {});
+	StateManager::instance().add_game_state(new StartMenuState {});
 
 	SDL_Log("game running success");
 	game_running = true;
