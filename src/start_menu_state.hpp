@@ -7,12 +7,16 @@
 
 class StartMenuState: public GameState {
 private:
+	int logo_width;
+	int logo_height;
 	int button_width;
 	int button_height;
 
 	int space_between_buttons;
 
+	// logo and button
 	int current_button;
+	SDL_Texture* logo;
 
 	SDL_Texture* button_start;
 	SDL_Texture* button_help;
@@ -21,6 +25,8 @@ private:
 	std::vector<SDL_Texture*> buttons;
 
 	// draw position
+	int logo_pos_x;
+	int logo_pos_y;
 	int draw_pos_x;
 	int draw_pos_y;
 

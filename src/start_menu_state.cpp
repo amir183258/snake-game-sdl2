@@ -6,6 +6,8 @@
 
 StartMenuState::StartMenuState() {
 	// import button textures, they are same size
+	logo = load_texture("./assets/start_menu_state/logo.png");
+
 	button_start = load_texture("./assets/start_menu_state/button_start.png");
 	button_help = load_texture("./assets/start_menu_state/button_help.png");
 	button_exit = load_texture("./assets/start_menu_state/button_exit.png");
@@ -13,9 +15,12 @@ StartMenuState::StartMenuState() {
 	// vertical space between buttons
 	space_between_buttons = 30;
 
+	// logo width and height
+	SDL_QueryTexture(logo, nullptr, nullptr, &logo_width, &logo_height);
+
 	// button width and height
 	SDL_QueryTexture(button_start, nullptr, nullptr, &button_width, &button_height);
-	button_width /= 2;
+	button_width /= 2; // because buttons have selected and unselected textures
 
 	// append buttons to buttons list
 	buttons.push_back(button_start);
@@ -25,13 +30,17 @@ StartMenuState::StartMenuState() {
 	// set current button to the first button
 	current_button = 0;
 
-	// compute draw position
-	int total_bbox_w = button_width;
-	int total_bbox_h = button_height * buttons.size() + space_between_buttons * (buttons.size() - 1);
-
+	// compute draw position for logo
 	int window_w;
 	int window_h;
 	SDL_GetWindowSize(Game::instance().get_window(), &window_w, &window_h);
+
+	logo_pos_x = (window_w - logo_width) / 2;
+	logo_pos_y = (window_w - logo_height) / 2;
+
+	// compute draw position for buttons
+	int total_bbox_w = button_width;
+	int total_bbox_h = button_height * buttons.size() + space_between_buttons * (buttons.size() - 1);
 
 	draw_pos_x = (window_w - total_bbox_w) / 2;
 	draw_pos_y = (window_h - total_bbox_h) / 2;
@@ -69,7 +78,6 @@ void StartMenuState::handle_input(SDL_Keycode key) {
 }
 
 void StartMenuState::draw(SDL_Renderer* renderer) {
-	// TODO add a big game logo
 	// drawing a big rectangle
 	int window_w;
 	int window_h;
@@ -84,6 +92,15 @@ void StartMenuState::draw(SDL_Renderer* renderer) {
 	SDL_SetRenderDrawColor(renderer, 182, 208, 226, 100);
 	SDL_RenderFillRect(renderer, &window_rect);
 
+	// draw logo
+	SDL_Rect dest_rect;
+	dest_rect.x = logo_pos_x;
+	dest_rect.y = logo_pos_y;
+	dest_rect.w = logo_width;
+	dest_rect.h = logo_height;
+
+	SDL_RenderCopy(renderer, logo, nullptr, &dest_rect);
+
 	// draw buttons
 	SDL_Rect source_rect;
 	source_rect.x = 0;
@@ -91,7 +108,6 @@ void StartMenuState::draw(SDL_Renderer* renderer) {
 	source_rect.w = button_width;
 	source_rect.h = button_height;
 
-	SDL_Rect dest_rect;
 	dest_rect.x = draw_pos_x;
 	dest_rect.y = draw_pos_y;
 	dest_rect.w = button_width;
@@ -115,6 +131,7 @@ void StartMenuState::update() {
 }
 
 StartMenuState::~StartMenuState() {
+	SDL_DestroyTexture(logo);
 	for (int i = 0; i < buttons.size(); ++i)
 		SDL_DestroyTexture(buttons[i]);
 
