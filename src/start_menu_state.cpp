@@ -3,6 +3,7 @@
 #include "./game.hpp"
 #include "./state_manager.hpp"
 #include "./play_state.hpp"
+#include "./help_state.hpp"
 
 StartMenuState::StartMenuState() {
 	// import button textures, they are same size
@@ -69,7 +70,9 @@ void StartMenuState::handle_input(SDL_Keycode key) {
 			StateManager::instance().remove_first_game_state();
 			break;
 		case 1: // help button
-			// TODO
+			StateManager::instance().add_game_state(new HelpState {});
+			StateManager::instance().remove_first_game_state();
+
 			break;
 		case 2: // exit button
 			Game::instance().set_running(false);
