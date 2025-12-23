@@ -35,16 +35,22 @@ PauseState::PauseState() {
 
 	draw_pos_x = (window_w - total_bbox_w) / 2;
 	draw_pos_y = (window_h - total_bbox_h) / 2;
+
+	// load sound
+	navigate_sound = Mix_LoadWAV("./assets/sound/navigate.wav");
+	confirm_sound = Mix_LoadWAV("./assets/sound/confirm.wav");
 }
 
 void PauseState::handle_input(SDL_Keycode key) {
 	switch (key) {
 	case SDLK_w:
+		Mix_PlayChannel(-1, navigate_sound, 0);
 		--current_button;
 		if (current_button < 0)
 			current_button = buttons.size() - 1;
 		break;
 	case SDLK_s:
+		Mix_PlayChannel(-1, navigate_sound, 0);
 		++current_button;
 		if (current_button >= buttons.size())
 			current_button = 0;
@@ -54,6 +60,7 @@ void PauseState::handle_input(SDL_Keycode key) {
 		StateManager::instance().remove_last_game_state();
 		break;
 	case SDLK_RETURN:
+		Mix_PlayChannel(-1, confirm_sound, 0);
 		switch (current_button) {
 		case 0: // resume button, similar to SDLK_ESCAPE
 			StateManager::instance().remove_last_game_state();
@@ -118,8 +125,13 @@ void PauseState::update() {
 }
 
 PauseState::~PauseState() {
+	// textures
 	for (int i = 0; i < buttons.size(); ++i)
 		SDL_DestroyTexture(buttons[i]);
 
-	SDL_Log("destroying pause state textures...");
+	// sounds
+	Mix_FreeChunk(navigate_sound);
+	Mix_FreeChunk(confirm_sound);
+
+	SDL_Log("destroying pause state textures and sounds...");
 }

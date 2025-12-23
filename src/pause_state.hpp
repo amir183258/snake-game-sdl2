@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
 #include "./game_state.hpp"
 
 class PauseState: public GameState {
@@ -23,6 +24,10 @@ private:
 	// draw position
 	int draw_pos_x;
 	int draw_pos_y;
+
+	// sound
+	Mix_Chunk *navigate_sound;
+	Mix_Chunk *confirm_sound;
 
 public:
 	PauseState();

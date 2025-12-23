@@ -2,6 +2,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_mixer.h>
 #include "./game.hpp"
 #include "./input_handler.hpp"
 #include "./playground.hpp"
@@ -21,6 +22,8 @@ bool Game::init(std::string title, int xpos, int ypos, bool fullscreen) {
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0) {
 		SDL_Log("SDL init success");
+
+		Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
 
 		if (TTF_Init() == -1) {
 			SDL_Log("error initializing SDL_ttf: %s\n", TTF_GetError());
