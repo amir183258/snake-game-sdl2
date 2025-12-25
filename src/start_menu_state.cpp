@@ -1,9 +1,13 @@
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
 #include "./start_menu_state.hpp"
 #include "./game.hpp"
 #include "./state_manager.hpp"
 #include "./play_state.hpp"
 #include "./help_state.hpp"
+
+Mix_Chunk* StartMenuState::navigate_sound = nullptr;
+Mix_Chunk* StartMenuState::confirm_sound = nullptr;
 
 StartMenuState::StartMenuState() {
 	// import button textures, they are same size
@@ -53,7 +57,6 @@ StartMenuState::StartMenuState() {
 	// sound volume
 	Mix_VolumeChunk(navigate_sound, MIX_MAX_VOLUME);
 	Mix_VolumeChunk(confirm_sound, MIX_MAX_VOLUME);
-
 }
 
 void StartMenuState::handle_input(SDL_Keycode key) {
@@ -83,7 +86,6 @@ void StartMenuState::handle_input(SDL_Keycode key) {
 			break;
 		case 1: // help button
 			StateManager::instance().add_game_state(new HelpState {});
-			StateManager::instance().remove_first_game_state();
 
 			break;
 		case 2: // exit button
@@ -150,10 +152,6 @@ StartMenuState::~StartMenuState() {
 	SDL_DestroyTexture(logo);
 	for (int i = 0; i < buttons.size(); ++i)
 		SDL_DestroyTexture(buttons[i]);
-
-	// sounds
-	//Mix_FreeChunk(navigate_sound);
-	//Mix_FreeChunk(confirm_sound);
 
 	SDL_Log("destroying start menu state textures and sounds...");
 }

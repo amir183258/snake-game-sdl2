@@ -2,6 +2,7 @@
 #define HELP_STATE_H
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
 #include "./game_state.hpp"
 
 class HelpState: public GameState {
@@ -11,6 +12,9 @@ private:
 	// help state dimensions
 	int w;
 	int h;
+
+	// sound
+	static Mix_Chunk *confirm_sound;
 
 public:
 	HelpState();

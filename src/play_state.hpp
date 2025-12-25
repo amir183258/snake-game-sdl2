@@ -3,6 +3,7 @@
 
 #include <string>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
 #include "./game_state.hpp"
 #include "./playground.hpp"
 #include "./snake.hpp"
@@ -22,6 +23,10 @@ private:
 
 	// private functions
 	void update_time_monitor();
+
+	// sound
+	static Mix_Chunk *move_sound;
+	static Mix_Chunk *eat_sound;
 
 public:
 	// these two variables manage time between pause and play states

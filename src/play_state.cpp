@@ -3,6 +3,7 @@
 #include <iomanip>
 #include <sstream>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
 #include "./play_state.hpp"
 #include "./game.hpp"
 #include "./playground.hpp"
@@ -17,6 +18,9 @@
 Uint32 PlayState::state_time = 0;
 Uint32 PlayState::pause_duration = 0;
 
+Mix_Chunk* PlayState::move_sound = nullptr;
+Mix_Chunk* PlayState::eat_sound = nullptr;
+
 PlayState::PlayState() {
 	// setting up playground
 	playground = &Playground::instance();
@@ -28,6 +32,7 @@ PlayState::PlayState() {
 	};
 
 	snake->eat_apple_call_back = [this](int score) {
+		Mix_PlayChannel(-1, eat_sound, 0);
 		std::stringstream ss;
 		ss << std::setw(4) << std::setfill('0') << score;
 		score_monitor->update("SCORE: " + ss.str());
@@ -57,20 +62,32 @@ PlayState::PlayState() {
 	// resetting snake and background
 	playground->reset_playground_board();
 	snake->reset_snake();
+
+	// load sound
+	move_sound = Mix_LoadWAV("./assets/sound/move.wav");
+	eat_sound = Mix_LoadWAV("./assets/sound/eat.wav");
+
+	// sound volume
+	Mix_VolumeChunk(move_sound, MIX_MAX_VOLUME);
+	Mix_VolumeChunk(eat_sound, MIX_MAX_VOLUME);
 }
 
 void PlayState::handle_input(SDL_Keycode key) {
 	switch (key) {
 	case SDLK_w:
+		Mix_PlayChannel(-1, move_sound, 0);
 		snake->set_direction(direction::UP);
 		break;
 	case SDLK_d:
+		Mix_PlayChannel(-1, move_sound, 0);
 		snake->set_direction(direction::RIGHT);
 		break;
 	case SDLK_s:
+		Mix_PlayChannel(-1, move_sound, 0);
 		snake->set_direction(direction::DOWN);
 		break;
 	case SDLK_a:
+		Mix_PlayChannel(-1, move_sound, 0);
 		snake->set_direction(direction::LEFT);
 		break;
 	case SDLK_ESCAPE:

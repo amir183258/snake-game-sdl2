@@ -32,8 +32,8 @@ private:
 	int draw_pos_y;
 
 	// sound
-	Mix_Chunk *navigate_sound;
-	Mix_Chunk *confirm_sound;
+	static Mix_Chunk *navigate_sound;
+	static Mix_Chunk *confirm_sound;
 
 public:
 	StartMenuState();

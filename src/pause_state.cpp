@@ -1,8 +1,12 @@
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
 #include "./pause_state.hpp"
 #include "./game.hpp"
 #include "./state_manager.hpp"
 #include "./play_state.hpp"
+
+Mix_Chunk *PauseState::navigate_sound = nullptr;
+Mix_Chunk *PauseState::confirm_sound = nullptr;
 
 PauseState::PauseState() {
 	// import button textures, they are same size
@@ -39,6 +43,10 @@ PauseState::PauseState() {
 	// load sound
 	navigate_sound = Mix_LoadWAV("./assets/sound/navigate.wav");
 	confirm_sound = Mix_LoadWAV("./assets/sound/confirm.wav");
+
+	// sound volume
+	Mix_VolumeChunk(navigate_sound, MIX_MAX_VOLUME);
+	Mix_VolumeChunk(confirm_sound, MIX_MAX_VOLUME);
 }
 
 void PauseState::handle_input(SDL_Keycode key) {
@@ -56,6 +64,7 @@ void PauseState::handle_input(SDL_Keycode key) {
 			current_button = 0;
 		break;
 	case SDLK_ESCAPE:
+		Mix_PlayChannel(-1, confirm_sound, 0);
 		PlayState::pause_duration += SDL_GetTicks() - PlayState::state_time;
 		StateManager::instance().remove_last_game_state();
 		break;
@@ -128,10 +137,6 @@ PauseState::~PauseState() {
 	// textures
 	for (int i = 0; i < buttons.size(); ++i)
 		SDL_DestroyTexture(buttons[i]);
-
-	// sounds
-	Mix_FreeChunk(navigate_sound);
-	Mix_FreeChunk(confirm_sound);
 
 	SDL_Log("destroying pause state textures and sounds...");
 }
